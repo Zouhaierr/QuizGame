@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package quizgame;
+
+// Define the Quiz message
+message Quiz {
+  int32 id = 1;
+  string question = 2;
+  string answer_1 = 3;
+  string answer_2 = 4;
+  string answer_3 = 5;
+  string answer_4 = 6;
+  int32 correct_answer = 7; // ID of the correct answer
+}
+
+// Define the Player message
+message Player {
+  string playerName = 1;
+  int32 score = 2;
+}
+
+// Define request messages for service methods
+message RegisterPlayerRequest {
+  string playerName = 1;
+}
+
+message RegisterPlayerResponse {
+  string message = 1;
+}
+
+message GetQuizRequest {}
+
+message GetQuizResponse {
+  repeated Quiz quizzes = 1; // List of all quizzes
+}
+
+message GetQuestionRequest {
+  int32 id = 1;
+}
+
+message GetQuestionResponse {
+  Quiz quiz = 1;
+}
+
+message PlayRequest {
+  string playerName = 1;
+  int32 quizId = 2;
+  int32 answer = 3; // Submitted answer ID
+}
+
+message PlayResponse {
+  bool correct = 1; // True if the answer is correct, false otherwise
+  string message = 2;
+  int32 new_score = 3;
+}
+
+message GetPlayerScoresRequest {}
+
+message GetPlayerScoresResponse {
+  repeated Player players = 1; // List of players with their scores
+}
+
+// Define the QuizGame service
+service QuizGame {
+  rpc RegisterPlayer (RegisterPlayerRequest) returns (RegisterPlayerResponse);
+  rpc GetQuiz (GetQuizRequest) returns (GetQuizResponse);
+  rpc GetQuestion (GetQuestionRequest) returns (GetQuestionResponse);
+  rpc Play (PlayRequest) returns (PlayResponse);
+  rpc GetPlayerScores (GetPlayerScoresRequest) returns (GetPlayerScoresResponse);
+}
